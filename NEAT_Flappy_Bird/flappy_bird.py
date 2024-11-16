@@ -172,7 +172,8 @@ class FlappyBirdGame:
         networks = []
         birds = []
         ge = []
-        
+        MAX_SCORE=200
+
         for _, genome in genomes:
             genome.fitness = 0
             network = neat.nn.FeedForwardNetwork.create(genome, config)
@@ -255,6 +256,11 @@ class FlappyBirdGame:
 
             self.draw_game(birds, pipes, base, score, pipe_ind)
 
+            if score >= MAX_SCORE:
+                print(f"Reached maximum score of {MAX_SCORE}")
+                running = False
+                break
+
     def draw_game(self, birds: List[Bird], pipes: List[Pipe], base: Base, 
                   score: int, pipe_ind: int) -> None:
         self.window.blit(self.assets.bg_img, (0, 0))
@@ -291,7 +297,9 @@ class FlappyBirdGame:
             f"Gen: {self.generation}",
             f"Alive: {len(birds)}"
         ]
+
         
+    
         for i, stat in enumerate(stats):
             text = self.assets.stat_font.render(stat, True, (255, 255, 255))
             x = 10 if i > 0 else GameConfig.WIDTH - text.get_width() - 15
@@ -299,6 +307,12 @@ class FlappyBirdGame:
             self.window.blit(text, (x, y))
 
         pygame.display.update()
+        
+import joblib 
+def save_model(winner, filename="winner_genome.joblib"):
+    with open(filename, "wb") as f:
+        joblib.dump(winner, f)
+    print(f"Model saved to {filename}")
 
 def run_neat(config_path: str) -> None:
     config = neat.Config(
@@ -317,6 +331,9 @@ def run_neat(config_path: str) -> None:
     game = FlappyBirdGame()
     winner = population.run(game.eval_genomes, 20)
     print(f'\nBest genome:\n{winner}')
+    
+    save_model(winner)
+
 
 if __name__ == '__main__':
     local_dir = Path(__file__).parent
