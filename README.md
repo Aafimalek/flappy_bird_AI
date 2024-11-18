@@ -34,7 +34,7 @@ This repository contains an AI-based implementation of the classic *Flappy Bird*
 
 3. Run the game:
    ```bash
-   python flappy_bird_ai.py
+   python flappy_bird.py
    ```
 
 ---
@@ -59,11 +59,14 @@ The NEAT algorithm evolves the neural network over multiple generations, improvi
 
 ```
 flappy_bird_AI/
-├── assets/                  # Game assets like sprites and sounds
+├── images/                  # Game assets like sprites and sounds
 ├── config-feedforward.txt   # NEAT configuration file
-├── flappy_bird_ai.py        # Main script to run the game
+├── flappy_bird.py           # Main script to run the game
+├── visualize.py             # to visualize the progress of model
 ├── README.md                # Project documentation
 ├── requirements.txt         # List of dependencies
+├── winner_genome.joblib      # saved traied model
+
 ```
 
 ---
